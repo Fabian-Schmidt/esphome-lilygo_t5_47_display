@@ -31,7 +31,7 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_CLEAR, default=True): cv.boolean,
             cv.Optional(CONF_POWER_OFF_DELAY_ENABLED, default=False): cv.boolean,
             cv.Optional(CONF_LANDSCAPE, default=True): cv.boolean,
-            cv.Optional(CONF_TEMPERATURE, default=23): cv.uint8_t,
+            cv.Optional(CONF_TEMPERATURE, default=23): cv.int_range(min=-127, max=127),
             # Overwrite default of base display class.
             cv.Optional(CONF_AUTO_CLEAR_ENABLED, default=False): cv.boolean,
             cv.Optional(CONF_LOW_MEMORY_MODE, default=False): cv.boolean,
