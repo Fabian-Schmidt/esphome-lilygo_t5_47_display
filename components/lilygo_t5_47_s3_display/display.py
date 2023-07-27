@@ -15,7 +15,6 @@ CONF_CLEAR = "clear"
 CONF_TEMPERATURE = "temperature"
 CONF_LANDSCAPE = "landscape"
 CONF_POWER_OFF_DELAY_ENABLED = "power_off_delay_enabled"
-CONF_LOW_MEMORY_MODE = "low_memory_mode"
 
 Epaper_ns = cg.esphome_ns.namespace("lilygo_t5_47_display")
 Epaper = Epaper_ns.class_(
@@ -33,7 +32,6 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_TEMPERATURE, default=23): cv.int_range(min=-127, max=127),
             # Overwrite default of base display class.
             cv.Optional(CONF_AUTO_CLEAR_ENABLED, default=False): cv.boolean,
-            cv.Optional(CONF_LOW_MEMORY_MODE, default=False): cv.boolean,
         }
     ).extend(cv.polling_component_schema("5s")),
     cv.has_at_most_one_key(CONF_PAGES, CONF_LAMBDA),
@@ -56,7 +54,6 @@ async def to_code(config):
     cg.add(var.set_landscape(config[CONF_LANDSCAPE]))
     cg.add(var.set_power_off_delay_enabled(config[CONF_POWER_OFF_DELAY_ENABLED]))
     cg.add(var.set_full_update_every(config[CONF_FULL_UPDATE_EVERY]))
-    cg.add(var.set_low_memory_mode(config[CONF_LOW_MEMORY_MODE]))
     
     cg.add_library("https://github.com/Fabian-Schmidt/epdiy.git#lilygos3", None)
     # cg.add_library("file:///home/fabian/Repos/Fabian-Schmidt/epdiy/", None)
