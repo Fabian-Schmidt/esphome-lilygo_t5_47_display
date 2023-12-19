@@ -9,7 +9,7 @@ namespace lilygo_t5_47_display {
 static const char *const TAG = "lilygo_t5_47_s3_display";
 
 void LilygoT547Display::setup() {
-  epd_init(EPD_OPTIONS_DEFAULT);
+  epd_init(&epd_board_lilygo_t5_47, &ED097TC2, EPD_LUT_64K);
   this->hl = epd_hl_init(WAVEFORM);
   if (landscape_) {
     EpdRotation orientation = EPD_ROT_LANDSCAPE;

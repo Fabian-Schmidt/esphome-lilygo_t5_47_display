@@ -8,15 +8,15 @@
 
 #ifndef EPD_DRIVER
 #define EPD_DRIVER
-#include "epd_driver.h"
 #include "epd_highlevel.h"
+#include "epdiy.h"
 #endif
 
 namespace esphome {
 namespace lilygo_t5_47_display {
 
 // LilyGo-EPD47
-class LilygoT547Display : public PollingComponent, public display::DisplayBuffer {
+class LilygoT547Display : public display::DisplayBuffer {
  public:
   float get_setup_priority() const override { return esphome::setup_priority::LATE; }
 
