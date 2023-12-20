@@ -18,7 +18,7 @@ CONF_POWER_OFF_DELAY_ENABLED = "power_off_delay_enabled"
 
 Epaper_ns = cg.esphome_ns.namespace("lilygo_t5_47_display")
 Epaper = Epaper_ns.class_(
-    "LilygoT547Display", cg.PollingComponent, display.DisplayBuffer
+    "LilygoT547Display", cg.PollingComponent, display.DisplayBuffer, display.Display
 )
 
 CONFIG_SCHEMA = cv.All(
