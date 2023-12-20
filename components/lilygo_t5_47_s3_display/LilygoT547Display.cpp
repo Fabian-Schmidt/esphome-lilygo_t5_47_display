@@ -51,7 +51,11 @@ void LilygoT547Display::clear_() {
 }
 
 void LilygoT547Display::flush_screen_changes_() {
-  this->err = epd_hl_update_screen(&this->hl, MODE_GC16, this->temperature_);
+  enum EpdDrawMode mode = (enum EpdDrawMode)(MODE_GC16);
+  if (this->partial_updates_ == this->full_update_every_) {
+    mode = (enum EpdDrawMode)(MODE_GL16 | MODE_PACKING_2PPB | PREVIOUSLY_WHITE);
+  }
+  this->err = epd_hl_update_screen(&this->hl, mode, this->temperature_);
 }
 
 void LilygoT547Display::on_shutdown() {
