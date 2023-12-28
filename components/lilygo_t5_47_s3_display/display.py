@@ -1,5 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
+from esphome import automation
+from esphome.automation import maybe_simple_id
 from esphome.components import display
 from esphome.const import (
     CONF_FULL_UPDATE_EVERY,
@@ -20,6 +22,7 @@ Epaper_ns = cg.esphome_ns.namespace("lilygo_t5_47_display")
 Epaper = Epaper_ns.class_(
     "LilygoT547Display", cg.PollingComponent, display.DisplayBuffer, display.Display
 )
+DisplayRedrawAction = Epaper_ns.class_("DisplayRedrawAction", automation.Action)
 
 CONFIG_SCHEMA = cv.All(
     display.FULL_DISPLAY_SCHEMA.extend(
@@ -53,7 +56,7 @@ async def to_code(config):
     cg.add(var.set_landscape(config[CONF_LANDSCAPE]))
     cg.add(var.set_power_off_delay_enabled(config[CONF_POWER_OFF_DELAY_ENABLED]))
     cg.add(var.set_full_update_every(config[CONF_FULL_UPDATE_EVERY]))
-    
+
     cg.add_library("https://github.com/Fabian-Schmidt/epdiy.git#lilygos3", None)
     # cg.add_library("file:///home/fabian/Repos/Fabian-Schmidt/epdiy/", None)
     cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
@@ -62,3 +65,17 @@ async def to_code(config):
     # cg.add_library("https://github.com/martinberlin/epdiy-rotation#lilygos3", None)
     # cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
     # cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_S3_47")
+
+
+@automation.register_action(
+    "display.redraw",
+    DisplayRedrawAction,
+    maybe_simple_id(
+        {
+            cv.Required(CONF_ID): cv.use_id(Epaper),
+        }
+    ),
+)
+async def component_display_redraw_to_code(config, action_id, template_arg, args):
+    paren = await cg.get_variable(config[CONF_ID])
+    return cg.new_Pvariable(action_id, template_arg, paren)

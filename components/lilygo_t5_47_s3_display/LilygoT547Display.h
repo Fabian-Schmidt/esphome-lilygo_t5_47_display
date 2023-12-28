@@ -29,13 +29,14 @@ class LilygoT547Display : public display::DisplayBuffer {
   void set_power_off_delay_enabled(bool val) { this->power_off_delay_enabled_ = val; }
   void set_temperature(int8_t val) { this->temperature_ = val; }
   void set_full_update_every(uint8_t val) { this->full_update_every_ = val; }
-  
+
   int get_width_internal() override { return 960; }
   int get_height_internal() override { return 540; }
 
   void setup() override;
   void update() override;
 
+  void blank_screen() { this->clear_(); }
   void set_all_white() { epd_hl_set_all_white(&hl); }
   void poweron() { epd_poweron(); }
   void poweroff() { epd_poweroff(); }
@@ -59,6 +60,21 @@ class LilygoT547Display : public display::DisplayBuffer {
   int8_t temperature_;
   uint8_t full_update_every_;
   uint8_t partial_updates_{0};
+};
+
+template<typename... Ts> class DisplayRedrawAction : public Action<Ts...> {
+ public:
+  DisplayRedrawAction(LilygoT547Display *component) : component_(component) {}
+
+  void play(Ts... x) override {
+    if (!this->component_->is_ready())
+      return;
+    this->component_->blank_screen();
+    this->component_->update();
+  }
+
+ protected:
+  LilygoT547Display *component_;
 };
 
 }  // namespace lilygo_t5_47_display
