@@ -59,7 +59,7 @@ async def to_code(config):
 
     cg.add_library("https://github.com/Fabian-Schmidt/epdiy.git#lilygos3", None)
     # cg.add_library("file:///home/fabian/Repos/Fabian-Schmidt/epdiy/", None)
-    cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
+    cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC2")
     cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_S3_47")
 
     # cg.add_library("https://github.com/martinberlin/epdiy-rotation#lilygos3", None)
